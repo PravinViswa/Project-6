@@ -14,14 +14,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $user = $_POST['username'] ?? '';
   $pass = $_POST['password'] ?? '';
 
- $conn = new mysqli(
-  getenv("DB_HOST"),
-  getenv("DB_USER"),
-  getenv("DB_PASS"),
-  getenv("DB_NAME"),
-  getenv("DB_PORT")
-);
+$host = getenv("MYSQL_HOST");
+$port = getenv("MYSQL_PORT");
+$dbname = getenv("MYSQL_DB");
+$user = getenv("MYSQL_USER");
+$pass = getenv("MYSQL_PASS");
 
+$conn = new mysqli($host, $user, $pass, $dbname, $port);
 
   if ($conn->connect_error) {
     die("DB connection failed: " . $conn->connect_error);

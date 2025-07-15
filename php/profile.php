@@ -10,9 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $mongoClient = new MongoDB\Client(getenv("MONGO_URI"));
+$mongoURI = getenv("MONGODB_URI");
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  
+  $mongoClient = new MongoDB\Client($mongoURI);
   $collection = $mongoClient->project6->profiles;
 
   if (isset($_POST['update'])) {

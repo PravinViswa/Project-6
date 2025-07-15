@@ -9,14 +9,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   exit();
 }
 
+$host = getenv("MYSQL_HOST");
+$port = getenv("MYSQL_PORT");
+$dbname = getenv("MYSQL_DB");
+$user = getenv("MYSQL_USER");
+$pass = getenv("MYSQL_PASS");
+$mongoURI = getenv("MONGODB_URI");
+
 // MySQL connection
-$conn = new mysqli(
-  getenv("DB_HOST"),
-  getenv("DB_USER"),
-  getenv("DB_PASS"),
-  getenv("DB_NAME"),
-  getenv("DB_PORT")
-);
+
+$conn = new mysqli($host, $user, $pass, $dbname, $port);
 
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
@@ -55,7 +57,7 @@ if ($stmt->execute()) {
   // Add profile to MongoDB
   require '../vendor/autoload.php';
   try {
-    $mongoClient = new MongoDB\Client(getenv("MONGO_URI"));
+    $mongoClient = new MongoDB\Client($mongoURI);
     $collection = $mongoClient->project6->profiles;
 
     $profileData = [
