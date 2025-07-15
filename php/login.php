@@ -34,30 +34,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   if ($result->num_rows === 1) {
     $row = $result->fetch_assoc();
     if (password_verify($pwd, $row['password'])) {
-      try {
+
         $redisHost = getenv("REDIS_HOST");
         $redisPort = getenv("REDIS_PORT");
         $redisUser = getenv("REDIS_USER");
         $redisPass = getenv("REDIS_PASS");
 
-  $redis = new Redis();
-  $redis->connect(
-  $redisHost,
-  (int)$redisPort,
-  2.5,
-  NULL,
-  0,
-  0,
-  [
-    'auth' => [$redisUser, $redisPass],
-    'ssl'  => ['verify_peer' => false]
-  ]
-);
+  try {
+    $redis = new Predis\Client([
+      'scheme' => 'tls',
+      'host'   => $redisHost,
+      'port'   => $redisPort,
+      'username' => $redisUser,
+      'password' => $redisPass,
+    ]);
 
-$redis->set("session_" . $usr, "logged_in");
-
-        $redisClient->set("session_" . $usr, "logged_in");
-        echo "success";
+    $redis->set("session_$usr", "logged_in");
+    echo "success";
       } catch (Exception $e) {
         echo "Redis error: " . $e->getMessage();
       }
