@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       try {
         // ✅ Redis setup using ENV variables
         $redisClient = new Predis\Client([
-          'scheme' => 'tls',
+          'scheme' => 'tcp',
           'host'   => getenv('REDIS_HOST'),
           'port'   => getenv('REDIS_PORT'),
           'parameters' => [
