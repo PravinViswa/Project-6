@@ -1,6 +1,15 @@
 <?php
 require '../vendor/autoload.php';
 
+header("Access-Control-Allow-Origin: https://pravinviswa.github.io");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+  http_response_code(200);
+  exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $mongoClient = new MongoDB\Client(getenv("MONGO_URI"));
 
