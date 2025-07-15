@@ -35,15 +35,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $row = $result->fetch_assoc();
     if (password_verify($pwd, $row['password'])) {
       try {
-        // ✅ Redis setup using ENV variables
-        $redisClient = new Predis\Client([
-          'scheme' => 'tcp',
-          'host'   => getenv('REDIS_HOST'),
-          'port'   => getenv('REDIS_PORT'),
-          'parameters' => [
-            'password' => getenv('REDIS_PASS')
-          ]
-        ]);
+        $redisHost = getenv("REDIS_HOST");
+        $redisPort = getenv("REDIS_PORT");
+        $redisUser = getenv("REDIS_USER");
+        $redisPass = getenv("REDIS_PASS");
+
+  $redis = new Redis();
+  $redis->connect(
+  $redisHost,
+  (int)$redisPort,
+  2.5,
+  NULL,
+  0,
+  0,
+  [
+    'auth' => [$redisUser, $redisPass],
+    'ssl'  => ['verify_peer' => false]
+  ]
+);
+
+$redis->set("session_" . $usr, "logged_in");
 
         $redisClient->set("session_" . $usr, "logged_in");
         echo "success";

@@ -10,6 +10,8 @@ RUN pecl install mongodb && docker-php-ext-enable mongodb
 
 RUN a2enmod rewrite
 
+RUN pecl install redis && docker-php-ext-enable redis
+
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY . /var/www/html/
