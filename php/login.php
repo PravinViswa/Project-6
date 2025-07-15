@@ -14,13 +14,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $usr = $_POST['username'] ?? '';
   $pwd = $_POST['password'] ?? '';
 
-$host = getenv("MYSQL_HOST");
-$port = getenv("MYSQL_PORT");
-$dbname = getenv("MYSQL_DB");
-$user = getenv("MYSQL_USER");
-$pass = getenv("MYSQL_PASS");
+  $host = getenv("MYSQL_HOST");
+  $port = getenv("MYSQL_PORT");
+  $dbname = getenv("MYSQL_DB");
+  $user = getenv("MYSQL_USER");
+  $pass = getenv("MYSQL_PASS");
 
-$conn = new mysqli($host, $user, $pass, $dbname, $port);
+  $conn = new mysqli($host, $user, $pass, $dbname, $port);
 
   if ($conn->connect_error) {
     die("DB connection failed: " . $conn->connect_error);
@@ -35,9 +35,18 @@ $conn = new mysqli($host, $user, $pass, $dbname, $port);
     $row = $result->fetch_assoc();
     if (password_verify($pwd, $row['password'])) {
       try {
-        $redis = new Predis\Client();
-        $redis->set("session_" . $usr, "logged_in");
-        echo "success"; // ✅ must be exactly this, no extra output
+        // ✅ Redis setup using ENV variables
+        $redisClient = new Predis\Client([
+          'scheme' => 'tls',
+          'host'   => getenv('REDIS_HOST'),
+          'port'   => getenv('REDIS_PORT'),
+          'parameters' => [
+            'password' => getenv('REDIS_PASS')
+          ]
+        ]);
+
+        $redisClient->set("session_" . $usr, "logged_in");
+        echo "success";
       } catch (Exception $e) {
         echo "Redis error: " . $e->getMessage();
       }
