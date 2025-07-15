@@ -11,8 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  $user = $_POST['username'] ?? '';
-  $pass = $_POST['password'] ?? '';
+  $usr = $_POST['username'] ?? '';
+  $pwd = $_POST['password'] ?? '';
 
 $host = getenv("MYSQL_HOST");
 $port = getenv("MYSQL_PORT");
@@ -27,16 +27,16 @@ $conn = new mysqli($host, $user, $pass, $dbname, $port);
   }
 
   $stmt = $conn->prepare("SELECT password FROM users WHERE username = ?");
-  $stmt->bind_param("s", $user);
+  $stmt->bind_param("s", $usr);
   $stmt->execute();
   $result = $stmt->get_result();
 
   if ($result->num_rows === 1) {
     $row = $result->fetch_assoc();
-    if (password_verify($pass, $row['password'])) {
+    if (password_verify($pwd, $row['password'])) {
       try {
         $redis = new Predis\Client();
-        $redis->set("session_" . $user, "logged_in");
+        $redis->set("session_" . $usr, "logged_in");
         echo "success"; // ✅ must be exactly this, no extra output
       } catch (Exception $e) {
         echo "Redis error: " . $e->getMessage();
