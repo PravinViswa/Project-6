@@ -40,8 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       $redisUser = getenv("REDIS_USER");
       $redisPass = getenv("REDIS_PASS");
 
-      var_dump($redisHost, $redisPort, $redisPass); exit;
-
       try {
         $redis = new Predis\Client([
           'scheme'   => 'tcp',
