@@ -1,29 +1,29 @@
-$(document).ready(function () {
-  $("#register-form").submit(function (e) {
-    e.preventDefault(); // Don't reload the page
+$(document).ready(function(){
+  $("#register-form").submit(function(e){
+    e.preventDefault();
 
-    // Grab all form data
-    const username = $("#username").val().trim();
-    const email = $("#email").val().trim();
-    const password = $("#password").val().trim();
-    const name = $("#name").val().trim();
-    const age = $("#age").val().trim();
-    const dob = $("#dob").val();
-    const gender = $("#gender").val();
-    const contact = $("#contact").val().trim();
-    const about = $("#about").val().trim();
+    //To Grab all form data
+    const username=$("#username").val().trim();
+    const email=$("#email").val().trim();
+    const password=$("#password").val().trim();
+    const name=$("#name").val().trim();
+    const age=$("#age").val().trim();
+    const dob=$("#dob").val();
+    const gender=$("#gender").val();
+    const contact=$("#contact").val().trim();
+    const about=$("#about").val().trim();
 
-    // Basic required field check
-    if (!username || !email || !password) {
+    //required field check
+    if(!username||!email||!password){
       $("#register-alert").removeClass("d-none").text("Username, email, and password are required.");
       return;
     }
 
-    // Send to PHP using AJAX
+    //To Send to PHP using AJAX
     $.ajax({
-      url: "https://project-6-dbrj.onrender.com/php/register.php",
-      type: "POST",
-      data: {
+      url:"https://project-6-dbrj.onrender.com/php/register.php",
+      type:"POST",
+      data:{
         username,
         email,
         password,
@@ -34,15 +34,15 @@ $(document).ready(function () {
         contact,
         about
       },
-      success: function (res) {
-        if (res === "success") {
+      success:function(res){
+        if(res==="success"){
           alert("Registered successfully! Now you can login.");
-          window.location.href = "login.html";
-        } else {
+          window.location.href="login.html";
+        }else{
           $("#register-alert").removeClass("d-none").text(res);
         }
       },
-      error: function () {
+      error:function(){
         $("#register-alert").removeClass("d-none").text("Something broke. Try again.");
       }
     });

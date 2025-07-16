@@ -1,33 +1,33 @@
-body {
-  background-color: #f8f9fa;
-  padding-top: 20px; /* ensures content not hidden behind top edge */
+body{
+  background-color:#f8f9fa;
+  padding-top:20px;
+
+.card{
+  border-radius:10px;
+  box-shadow:0px 4px 15px rgba(0,0,0,0.1);
+  background-color:#ffffff;
 }
 
-.card {
-  border-radius: 10px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
+input:focus,select:focus,textarea:focus{
+  border-color:#198754;
+  box-shadow:0 0 5px rgba(25,135,84,0.4);
+  outline:none;
 }
 
-input:focus, select:focus, textarea:focus {
-  border-color: #198754;
-  box-shadow: 0 0 5px rgba(25, 135, 84, 0.4);
-  outline: none;
+.alert{
+  margin-bottom:15px;
 }
 
-.alert {
-  margin-bottom: 15px;
+button:hover{
+  opacity:0.9;
+  transition:all 0.2s ease-in-out;
 }
 
-button:hover {
-  opacity: 0.9;
-  transition: all 0.2s ease-in-out;
+label{
+  font-weight:500;
 }
 
-label {
-  font-weight: 500;
+textarea{
+  resize:vertical;
 }
-
-textarea {
-  resize: vertical;
 }
