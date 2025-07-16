@@ -44,13 +44,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
       try {
         $redis = new Predis\Client([
-          'scheme'   => 'tls',
+          'scheme'   => 'tcp',
           'host'     => $redisHost,
           'port'     => $redisPort,
-          'password' => $redisPass,
-          'ssl'      => [
-            'verify_peer' => false,  // turn on in prod if needed
-          ],
+          'password' => $redisPass
         ]);
 
         $redis->set("session_$usr", "logged_in");
