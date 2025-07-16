@@ -35,26 +35,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $row = $result->fetch_assoc();
     if (password_verify($pwd, $row['password'])) {
 
-        $redisHost = getenv("REDIS_HOST");
-        $redisPort = getenv("REDIS_PORT");
-        $redisUser = getenv("REDIS_USER");
-        $redisPass = getenv("REDIS_PASS");
+      $redisHost = getenv("REDIS_HOST");
+      $redisPort = getenv("REDIS_PORT");
+      $redisUser = getenv("REDIS_USER");
+      $redisPass = getenv("REDIS_PASS");
 
-  try {
-    $redis = new Predis\Client([
-    'scheme'   => 'tls',
-    'host'     => $redisHost,
-    'port'     => $redisPort,
-    'password' => $redisPass, // or use getenv()
-    'ssl'      => ['verify_peer' => false] // optional: disable strict check
-]);
+      try {
+        $redis = new Predis\Client([
+          'scheme'   => 'tls',
+          'host'     => $redisHost,
+          'port'     => $redisPort,
+          'password' => $redisPass,
+          'ssl'      => [
+            'verify_peer' => false,  // turn on in prod if needed
+          ],
+        ]);
 
-
-    $redis->set("session_$usr", "logged_in");
-    echo "success";
+        $redis->set("session_$usr", "logged_in");
+        echo "success";
       } catch (Exception $e) {
         echo "Redis error: " . $e->getMessage();
       }
+
     } else {
       echo "Invalid username or password";
     }
